@@ -1,0 +1,171 @@
+.MatchesViewer--wrapper {
+    width: 100%;
+    height: 100%;
+}
+.MatchesViewer--wrapper h2.title,
+.MatchesViewer--wrapper h4.subtitle {
+    padding: 0 !important;
+    margin: 0 !important;
+    text-align: center !important;
+}
+.MatchesViewer--game--header {
+    height: 180px;
+    background-position: center;
+    border-radius: 5px;
+    min-height: 180px;
+    position: relative;
+    background-size: cover;
+}
+.MatchesViewer--game--header--shadow {
+    position: relative;
+    border-radius: 5px;
+    height: 180px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.header--top {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.header--top > div {
+    font-size: 32px;
+    margin-right: 10px;
+}
+
+.header--top span {
+    margin-right: 15px;
+    font-size: 20px;
+    text-shadow: -1px 2px 2px rgba(0, 0, 0, 0.33);
+}
+
+.header--bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.header--bottom span,
+a {
+    text-shadow: -1px 2px 2px rgba(0, 0, 0, 0.33);
+}
+
+.header--bottom a.Beatmap--name {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.header-bottom span.Beatmap--diff {
+    font-size: 14px;
+}
+
+.MatchesViewer--game--scores {
+    margin: 10px;
+}
+
+.MatchesViewer--game {
+    margin-bottom: 10px;
+    color: white;
+}
+
+.MatchesViewer--game--scores-segment {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+.MatchesViewer--game--scores--container--row {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    gap: 5px;
+}
+.MatchesViewer--game--scores--container--column {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.MatchesViewer--game--scores--left img.avatar {
+    width: 48px;
+    min-width: 48px;
+    max-height: 48px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.MatchViewer--info {
+    font-size: 20px;
+}
+
+.MatchViewer--info span.mods {
+    color: red;
+    text-shadow: -1px 2px 2px rgba(0, 0, 0, 0.33);
+}
+
+.MatchViewer--info span.failed {
+    margin-left: 10px;
+    color: red;
+    text-shadow: -1px 2px 2px rgba(0, 0, 0, 0.33);
+}
+
+.MatchViewer--flag {
+    margin-top: 5px;
+    width: 21px;
+}
+
+.MatchesViewer--game--scores--right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.MatchesViewer--game--scores--right span.big {
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.MatchesViewer--game--scores-segment.yellow:not(.inverted) {
+    border-top: 2px solid #f1c40f !important;
+}
+
+.MatchesViewer--game--scores-segment.grey:not(.inverted) {
+    border-top: 2px solid #bdc3c7 !important;
+}
+
+.MatchesViewer--game--scores-segment.orange:not(.inverted) {
+    border-top: 2px solid #e67e22 !important;
+}
+
+.MatchesViewer--game--scores-segment.red:not(.inverted) {
+    border-top: 2px solid #e74c3c !important;
+}
+
+.MatchesViewer--game--scores-segment.blue:not(.inverted) {
+    border-top: 2px solid #3498db !important;
+}
+
+@media (max-width: 800px) {
+    .failed {
+        margin-left: 0 !important;
+    }
+
+    .MatchesViewer--game--scores-segment {
+        flex-direction: column !important;
+    }
+
+    .MatchesViewer--game--scores-segment > div {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+}
