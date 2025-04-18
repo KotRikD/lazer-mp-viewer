@@ -187,6 +187,7 @@ const MatchesPlaylistViewer: React.FC<IMatchesPlaylistViewerProps> = ({
                                         <i
                                             className={`${item.user.country.code.toLowerCase()} flag`}
                                         />
+                                        (started at: {moment(item.started_at).format('MMMM Do YYYY, h:mm:ss a')}, ended at: {moment(item.ended_at).format('MMMM Do YYYY, h:mm:ss a')})
                                     </div>
                                 </div>
                             </div>
