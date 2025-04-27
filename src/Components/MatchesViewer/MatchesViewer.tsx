@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import moment from 'moment';
 import { v2_rooms_details, v2_rooms_scores_all } from 'osu-api-extended';
+
+import { merge } from 'lodash';
 
 import './MatchesViewer.css';
 import useSWR from 'swr';
@@ -15,6 +17,8 @@ interface IMatchesPlaylistViewerProps {
     playlistId: number;
     playlistData: v2_rooms_details.Playlist;
     authToken: string;
+
+    onEntry: (lobbyScore: object[]) => void;
 }
 
 const formatNumber = (num: number) => {
@@ -100,13 +104,30 @@ const MatchesPlaylistViewer: React.FC<IMatchesPlaylistViewerProps> = ({
     roomId,
     playlistData,
     playlistId,
-    authToken
+    authToken,
+    onEntry
 }) => {
     const { data, error, isLoading } = useLazerRoomsPlaylist(
         roomId,
         playlistId,
         authToken
     );
+
+    useEffect(() => {
+        if (!data) { return; }
+
+        const newScores = data.scores.map(
+            (item: v2_rooms_scores_all.Score) => ({
+                score_id: item.solo_score_id,
+                user_id: item.user_id,
+                map_id: item.beatmap_id,
+                score: item.total_score,
+                pass: item.passed
+            })
+        );
+
+        onEntry(newScores);
+    }, [data])
 
     if (isLoading)
         return (
@@ -213,6 +234,29 @@ const MatchesViewer: React.FC<IMatchesViewerProps> = ({
     authToken
 }) => {
     const { data, error, isLoading } = useLazerRooms(roomId, authToken);
+    const [ lobbyData, setLobbyData ] = useState<any>({});
+
+    const onEntry = useCallback((lobbyScores: object[]) => {
+        const filteredScores = lobbyScores.filter((score: any) => !lobbyData.scores.some((_score: any) => _score.score_id === score.score_id))
+
+        setLobbyData({
+            ...lobbyData,
+            scores: [
+                ...lobbyData.scores,
+                ...filteredScores
+            ]
+        })
+    }, [lobbyData])
+
+    useEffect(() => {
+        if (!data) { return; }
+
+        setLobbyData({
+            name: data.name,
+            id: data.id,
+            scores: lobbyData.scores ? lobbyData.scores : []
+        })
+    }, [data])
 
     if (isLoading)
         return (
@@ -224,8 +268,6 @@ const MatchesViewer: React.FC<IMatchesViewerProps> = ({
         );
 
     if (error) return <>error happend!</>;
-
-    console.log(data.playlist);
 
     return (
         <div className="ui raised segment MatchesViewer--wrapper">
@@ -242,8 +284,18 @@ const MatchesViewer: React.FC<IMatchesViewerProps> = ({
                     roomId={roomId}
                     playlistId={playlist.id}
                     authToken={authToken}
+                    onEntry={onEntry}
                 />
             ))}
+            {
+                lobbyData.scores &&
+                <div className="ui form">
+                    <div className="field">
+                        <label>For tournament spreadsheets (in format: name,match_id,user_id,map_id,score,pass(TRUE, FALSE))</label>
+                        <textarea value={lobbyData.scores.map((score: any) => `${lobbyData.name},${lobbyData.id},${score.user_id},${score.map_id},${score.score},${score.pass ? 'TRUE' : 'FALSE'},`).join('\n')}/>
+                    </div>
+                </div>
+            }
         </div>
     );
 };
