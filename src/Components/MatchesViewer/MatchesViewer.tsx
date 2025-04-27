@@ -186,15 +186,34 @@ const MatchesPlaylistViewer: React.FC<IMatchesPlaylistViewerProps> = ({
                                         src={`https://a.ppy.sh/${item.user_id}`}
                                         alt="user avatar"
                                     />
+                                    <i
+                                        className={`${item.user.country.code.toLowerCase()} flag`}
+                                    />
                                     <div className="MatchesViewer--game--scores--container--row">
                                         <a
                                             href={`https://osu.ppy.sh/u/${item.user_id}`}
                                             className="MatchViewer--info"
                                         >
                                             {item.user.username}{' '}
-                                            <span className="mods">
+                                            <span className="mods" data-content="test">
                                                 {item.mods.map(
-                                                    (mod) => `${mod.acronym} `
+                                                    (mod, ind) => (
+                                                        <React.Fragment key={`${mod}${ind}`}>
+                                                            {mod.acronym}
+                                                            {
+                                                                (mod as any).settings &&
+                                                                    Object.keys((mod as any).settings).map((name) => 
+                                                                    <React.Fragment key={`${mod}${ind}${name}${item.solo_score_id}`}>
+                                                                        <span style={{
+                                                                            marginLeft: '2px',
+                                                                            fontSize: '14px'
+                                                                        }}>{name as any}</span>{' '}
+                                                                        {(mod as any).settings[name as string]}
+                                                                    </React.Fragment>
+                                                                )
+                                                            }
+                                                        </React.Fragment>
+                                                    )
                                                 )}
                                             </span>
                                             {!item.passed ? (
@@ -203,11 +222,10 @@ const MatchesPlaylistViewer: React.FC<IMatchesPlaylistViewerProps> = ({
                                                 </span>
                                             ) : null}
                                         </a>
-                                        <i
-                                            className={`${item.user.country.code.toLowerCase()} flag`}
-                                        />
-                                        (started at: {moment(item.started_at).format('MMMM Do YYYY, h:mm:ss a')}, ended at: {moment(item.ended_at).format('MMMM Do YYYY, h:mm:ss a')})
                                     </div>
+                                </div>
+                                <div>
+                                    (started at: {moment(item.started_at).format('MMMM Do YYYY, h:mm:ss a')}, ended at: {moment(item.ended_at).format('MMMM Do YYYY, h:mm:ss a')})
                                 </div>
                             </div>
                             <div className="MatchesViewer--game--scores--right">
@@ -290,7 +308,7 @@ const MatchesViewer: React.FC<IMatchesViewerProps> = ({
                 <div className="ui form">
                     <div className="field">
                         <label>For tournament spreadsheets (in format: name,match_id,user_id,map_id,score,pass(TRUE, FALSE))</label>
-                        <textarea value={lobbyData.scores.map((score: any) => `${lobbyData.name},${lobbyData.id},${score.user_id},${score.map_id},${score.score},${score.pass ? 'TRUE' : 'FALSE'},`).join('\n')}/>
+                        <textarea readOnly value={lobbyData.scores.map((score: any) => `${lobbyData.name},${lobbyData.id},${score.user_id},${score.map_id},${score.score},${score.pass ? 'TRUE' : 'FALSE'},`).join('\n')}/>
                     </div>
                 </div>
             }
