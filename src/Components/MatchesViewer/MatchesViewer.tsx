@@ -2,8 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import moment from 'moment';
 import { v2_rooms_details, v2_rooms_scores_all } from 'osu-api-extended';
 
-import { merge } from 'lodash';
-
 import './MatchesViewer.css';
 import useSWR from 'swr';
 
